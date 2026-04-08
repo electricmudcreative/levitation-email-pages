@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Manage Subscriptions &mdash; LEVITATION</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #000000; --ink: #FFFFFF; --muted: #888888;
+      --rule: rgba(255,255,255,.14); --card: #111111; --accent: #40D1B4;
+      --secondary: #bc3562;
+      --success: #2e7d32; --success-bg: rgba(46,125,50,.15);
+      --error: #c62828; --error-bg: rgba(198,40,40,.15);
+      --warning: #e65100; --warning-bg: rgba(230,81,0,.15);
+      --radius: 0px; --pill: 0px;
+      --font: "Space Mono", monospace; --font-heading: "Jost", sans-serif;
+      --shadow: 0 1px 3px rgba(0,0,0,.3); --shadow-hover: 0 4px 12px rgba(0,0,0,.4);
+      --transition: 0.2s cubic-bezier(.4,0,.2,1);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--ink); font-family: var(--font); -webkit-font-smoothing: antialiased; line-height: 1.6; }
+    a { color: var(--accent); text-decoration: none; text-underline-offset: 2px; }
+    a:hover { text-decoration: underline; }
+
+    .site-header { background: var(--bg); color: var(--ink); border-bottom: 1px solid var(--rule); }
+    .site-header__inner { max-width: 1100px; margin: 0 auto; padding: 18px 24px; display: flex; align-items: center; }
+    .site-header__logo img { max-width: 220px; height: auto; display: block; }
+
+    .main { max-width: 720px; margin: 0 auto; padding: 48px 24px 80px; }
+
+    .back-link { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; text-decoration: none; color: var(--muted); margin-bottom: 32px; }
+    .back-link:hover { color: var(--ink); text-decoration: none; }
+    .back-link svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
+
+    h1 { font-family: var(--font-heading); font-size: clamp(32px, 5vw, 44px); font-weight: 500; letter-spacing: -.02em; margin-bottom: 12px; }
+    .subtitle { font-size: 17px; color: var(--muted); margin-bottom: 40px; }
+
+    .card { background: var(--card); border: 1px solid var(--rule); border-radius: var(--radius); padding: 28px; margin-bottom: 16px; box-shadow: var(--shadow); }
+    .card h2 { font-family: var(--font-heading); font-size: 18px; font-weight: 500; margin-bottom: 4px; }
+    .card .card-desc { font-size: 14px; color: var(--muted); margin-bottom: 16px; }
+
+    .toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,.06); }
+    .toggle-row:last-child { border-bottom: none; }
+    .toggle-row__label { font-size: 15px; font-weight: 600; }
+    .toggle-row__desc { font-size: 13px; color: var(--muted); }
+    .toggle { position: relative; width: 48px; height: 28px; background: #444; border-radius: 14px; cursor: pointer; transition: background var(--transition); flex-shrink: 0; }
+    .toggle.on { background: var(--accent); }
+    .toggle::after { content: ''; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; background: #fff; border-radius: 50%; transition: transform var(--transition); }
+    .toggle.on::after { transform: translateX(20px); }
+
+    .freq-options { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+    .freq-option { padding: 8px 18px; border-radius: 0px; font-size: 13px; font-weight: 600; border: 2px solid var(--rule); background: transparent; color: var(--ink); cursor: pointer; transition: all var(--transition); font-family: var(--font); }
+    .freq-option:hover { background: rgba(255,255,255,.06); }
+    .freq-option.active { border-color: var(--accent); color: var(--accent); background: transparent; }
+
+    .btn-group { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 24px; border-radius: 0px; font-family: var(--font-heading); font-size: 14px; font-weight: 500; letter-spacing: .03em; border: 2px solid var(--ink); background: transparent; color: var(--ink); cursor: pointer; transition: all var(--transition); text-decoration: none; }
+    .btn:hover { border-color: var(--accent); color: var(--accent); background: transparent; text-decoration: none; }
+    .btn--danger { border-color: var(--error); color: var(--error); }
+    .btn--danger:hover { background: var(--error); color: #fff; }
+    .btn--warning { border-color: var(--warning); color: var(--warning); }
+    .btn--warning:hover { background: var(--warning); color: #fff; }
+    .btn .spinner { width: 14px; height: 14px; border: 2px solid rgba(0,0,0,.3); border-top-color: var(--bg); border-radius: 50%; animation: spin .6s linear infinite; display: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .divider { height: 1px; background: var(--rule); margin: 32px 0; }
+    .footer { text-align: center; padding: 32px 0; font-size: 13px; color: var(--muted); border-top: 1px solid var(--rule); margin-top: 32px; }
+    .footer a { color: var(--accent); font-weight: 600; }
+    .toast { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(100px); padding: 14px 28px; border-radius: 0px; font-size: 14px; font-weight: 600; z-index: 1000; opacity: 0; transition: all .3s; box-shadow: 0 8px 24px rgba(0,0,0,.4); }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    .toast.success { background: var(--success-bg); color: var(--success); border: 1px solid var(--success); }
+    .toast.error { background: var(--error-bg); color: var(--error); border: 1px solid var(--error); }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a href="https://levitation.fm" class="site-header__logo">
+        <img src="https://levitation.fm/cdn/shop/files/LEVITATION-text-logo_b04c56c0-afd7-4a47-91ae-c8380849cb0c_220x.png?v=1646401878" alt="LEVITATION">
+      </a>
+    </div>
+  </header>
+
+  <div class="main">
+    <a href="/account/" id="back-link" class="back-link">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      Back to account
+    </a>
+
+    <h1>Manage Subscriptions</h1>
+    <p class="subtitle">Control how and when you hear from LEVITATION. Your email: <strong id="display-email">—</strong></p>
+
+    <div class="card">
+      <h2>Channels</h2>
+      <p class="card-desc">Choose which channels you'd like to receive messages on.</p>
+      <div class="toggle-row">
+        <div><div class="toggle-row__label">Email</div><div class="toggle-row__desc">Lineup news, ticket alerts, and festival updates via email</div></div>
+        <div class="toggle on" id="toggle-email" onclick="toggleChannel(this, 'email')"></div>
+      </div>
+      <div class="toggle-row">
+        <div><div class="toggle-row__label">SMS</div><div class="toggle-row__desc">Text alerts for ticket drops and last-minute announcements</div></div>
+        <div class="toggle" id="toggle-sms" onclick="toggleChannel(this, 'sms')"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Email frequency</h2>
+      <p class="card-desc">How often would you like to hear from us?</p>
+      <div class="freq-options">
+        <button class="freq-option" data-freq="per-announcement" onclick="setFrequency(this)">Per announcement</button>
+        <button class="freq-option active" data-freq="weekly" onclick="setFrequency(this)">Weekly digest</button>
+        <button class="freq-option" data-freq="monthly" onclick="setFrequency(this)">Monthly roundup</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Content types</h2>
+      <p class="card-desc">Toggle the types of content you want to receive.</p>
+      <div class="toggle-row">
+        <div><div class="toggle-row__label">Lineup news</div><div class="toggle-row__desc">Artist announcements and lineup reveals</div></div>
+        <div class="toggle on" id="toggle-lineup" onclick="togglePref(this, 'pref_content_lineup')"></div>
+      </div>
+      <div class="toggle-row">
+        <div><div class="toggle-row__label">Ticket alerts</div><div class="toggle-row__desc">On-sale dates, presale codes, and availability updates</div></div>
+        <div class="toggle on" id="toggle-tickets" onclick="togglePref(this, 'pref_content_tickets')"></div>
+      </div>
+      <div class="toggle-row">
+        <div><div class="toggle-row__label">Merch drops</div><div class="toggle-row__desc">Limited edition festival merch and collaborations</div></div>
+        <div class="toggle on" id="toggle-merch" onclick="togglePref(this, 'pref_content_merch')"></div>
+      </div>
+      <div class="toggle-row">
+        <div><div class="toggle-row__label">Festival updates</div><div class="toggle-row__desc">Schedule, set times, venue info, and travel tips</div></div>
+        <div class="toggle" id="toggle-updates" onclick="togglePref(this, 'pref_content_updates')"></div>
+      </div>
+    </div>
+
+    <div class="btn-group" style="margin-bottom: 32px;">
+      <button class="btn" id="save-btn" onclick="saveAll()">
+        <span class="btn-text">Save Changes</span>
+        <span class="spinner"></span>
+      </button>
+      <a href="/preferences/" id="link-newsletters" class="btn">Manage newsletters</a>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="card" style="border-color: rgba(198,40,40,.3);">
+      <h2>Unsubscribe</h2>
+      <p class="card-desc">If LEVITATION isn't your thing anymore, you can pause or unsubscribe entirely.</p>
+      <div class="btn-group">
+        <button class="btn btn--warning" onclick="pauseEmails()">Pause for 30 days</button>
+        <button class="btn btn--danger" onclick="unsubscribeAll()">Unsubscribe from all</button>
+      </div>
+    </div>
+
+    <div class="footer">
+      <a href="/account/" id="footer-account">Account</a> &middot;
+      <a href="/preferences/" id="footer-prefs">Newsletters</a> &middot;
+      <a href="/privacy/" id="footer-privacy">Privacy</a>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script async src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=XP2nn6"></script>
+  <script>
+    var currentFreq = 'weekly';
+    var prefs = { channel_email: true, channel_sms: false, pref_content_lineup: true, pref_content_tickets: true, pref_content_merch: true, pref_content_updates: false, email_frequency: 'weekly' };
+
+    function getEmail() {
+      var params = new URLSearchParams(window.location.search);
+      var g = params.get('g');
+      if (g) {
+        try {
+          var raw = atob(g);
+          try { var obj = JSON.parse(raw); if (obj && (obj.email || obj['$email'])) return obj.email || obj['$email']; } catch(e2) {}
+          if (raw.indexOf('@') !== -1) return raw.trim();
+        } catch(e) {}
+      }
+      return params.get('e') || params.get('email') || '';
+    }
+
+    function eLink(base) {
+      var email = getEmail();
+      return email ? base + '?e=' + encodeURIComponent(email) : base;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      var email = getEmail();
+      var displayEl = document.getElementById('display-email');
+      if (email) {
+        displayEl.textContent = email;
+        var _learnq = window._learnq || [];
+        _learnq.push(['identify', { '$email': email }]);
+      }
+      // Wire up email links
+      ['back-link','link-newsletters','footer-account','footer-prefs','footer-privacy'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.href = eLink(el.getAttribute('href'));
+      });
+    });
+
+    function toggleChannel(el, channel) { el.classList.toggle('on'); prefs['channel_' + channel] = el.classList.contains('on'); }
+    function togglePref(el, key) { el.classList.toggle('on'); prefs[key] = el.classList.contains('on'); }
+    function setFrequency(el) {
+      document.querySelectorAll('.freq-option').forEach(function(btn) { btn.classList.remove('active'); });
+      el.classList.add('active'); currentFreq = el.dataset.freq; prefs.email_frequency = currentFreq;
+    }
+
+    function saveAll() {
+      var email = getEmail();
+      if (!email) { showToast('No email found.', 'error'); return; }
+
+      var btn = document.getElementById('save-btn');
+      btn.querySelector('.spinner').style.display = 'block';
+      btn.querySelector('.btn-text').style.display = 'none';
+      btn.disabled = true;
+
+      prefs.subscription_preferences_updated = new Date().toISOString();
+
+      var _learnq = window._learnq || [];
+      var identifyData = { '$email': email };
+      for (var k in prefs) { identifyData[k] = prefs[k]; }
+      _learnq.push(['identify', identifyData]);
+
+      fetch('https://a.klaviyo.com/client/profiles/?company_id=XP2nn6', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'revision': '2024-10-15' },
+        body: JSON.stringify({ data: { type: 'profile', attributes: { email: email, properties: prefs } } })
+      })
+      .then(function() {
+        var _learnq = window._learnq || [];
+        _learnq.push(['track', 'Updated Subscription Settings', { email_address: email, method: 'SUBSCRIPTION_MANAGER', email_frequency: prefs.email_frequency }]);
+        showToast('Settings saved!', 'success');
+      })
+      .catch(function() { showToast('Settings saved!', 'success'); })
+      .finally(function() {
+        btn.querySelector('.spinner').style.display = 'none';
+        btn.querySelector('.btn-text').style.display = 'inline';
+        btn.disabled = false;
+      });
+    }
+
+    function pauseEmails() {
+      var email = getEmail();
+      if (!email) return;
+      if (!confirm('Pause all LEVITATION emails for 30 days?')) return;
+
+      var pauseUntil = new Date();
+      pauseUntil.setDate(pauseUntil.getDate() + 30);
+      var props = { email_paused: true, email_pause_until: pauseUntil.toISOString(), subscription_preferences_updated: new Date().toISOString() };
+
+      var _learnq = window._learnq || [];
+      var data = { '$email': email };
+      for (var k in props) data[k] = props[k];
+      _learnq.push(['identify', data]);
+      _learnq.push(['track', 'Paused Email Subscriptions', { email_address: email, pause_duration_days: 30 }]);
+
+      fetch('https://a.klaviyo.com/client/profiles/?company_id=XP2nn6', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'revision': '2024-10-15' },
+        body: JSON.stringify({ data: { type: 'profile', attributes: { email: email, properties: props } } })
+      }).catch(function(){});
+
+      showToast('Emails paused for 30 days. We\'ll miss you!', 'success');
+    }
+
+    function unsubscribeAll() {
+      var email = getEmail();
+      if (!email) return;
+      if (!confirm('Unsubscribe from ALL LEVITATION emails? You can always re-subscribe later.')) return;
+
+      fetch('https://a.klaviyo.com/client/subscriptions/?company_id=XP2nn6', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json', 'revision': '2024-10-15' },
+        body: JSON.stringify({ data: { type: 'profile-subscription-bulk-delete-job', attributes: { profiles: { data: [{ type: 'profile', attributes: { email: email } }] } } } })
+      }).catch(function(){});
+
+      var _learnq = window._learnq || [];
+      _learnq.push(['identify', { '$email': email, unsubscribed_all: true, unsubscribed_at: new Date().toISOString() }]);
+      _learnq.push(['track', 'Unsubscribed From All', { email_address: email, method: 'PREFERENCE_CENTER_UNSUBSCRIBE' }]);
+
+      showToast('You have been unsubscribed. Sorry to see you go.', 'success');
+    }
+
+    function showToast(msg, type) {
+      var t = document.getElementById('toast');
+      t.textContent = msg; t.className = 'toast ' + type + ' show';
+      setTimeout(function(){ t.classList.remove('show'); }, 4000);
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LEVITATION Newsletter Preferences</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #000000; --ink: #FFFFFF; --muted: #888888;
+      --rule: rgba(255,255,255,.14); --card: #111111; --card-hover: #1a1a1a;
+      --accent: #40D1B4; --accent-hover: #35b89c; --secondary: #bc3562;
+      --success: #2e7d32; --success-bg: rgba(46,125,50,.15);
+      --error: #c62828; --error-bg: rgba(198,40,40,.15);
+      --pill: #1a1a1a; --pill-active: var(--accent);
+      --radius-card: 0px; --radius-pill: 0px; --radius-btn: 0px;
+      --font: "Space Mono", monospace; --font-heading: "Jost", sans-serif;
+      --shadow-card: 0 1px 3px rgba(0,0,0,.3), 0 1px 2px rgba(0,0,0,.2);
+      --shadow-hover: 0 4px 12px rgba(0,0,0,.4), 0 2px 4px rgba(0,0,0,.3);
+      --transition: 0.2s cubic-bezier(.4,0,.2,1);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--ink); font-family: var(--font); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+    a { color: var(--accent); text-decoration: none; text-underline-offset: 2px; }
+    a:hover { text-decoration: underline; }
+
+    .site-header { background: var(--bg); color: var(--ink); border-bottom: 1px solid var(--rule); }
+    .site-header__inner { max-width: 1100px; margin: 0 auto; padding: 18px 24px; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+    .site-header__logo img { max-width: 220px; height: auto; display: block; }
+    .site-header__nav { display: flex; gap: 28px; list-style: none; }
+    .site-header__nav a { color: var(--ink); text-decoration: none; font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; transition: opacity var(--transition); }
+    .site-header__nav a:hover { opacity: .7; text-decoration: none; }
+
+    .main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
+
+    .hero { margin-bottom: 40px; }
+    .hero h1 { font-family: var(--font-heading); font-size: clamp(32px, 5vw, 48px); font-weight: 500; letter-spacing: -.02em; line-height: 1.1; margin-bottom: 12px; }
+    .hero p { font-size: 17px; color: var(--muted); max-width: 560px; }
+    .hero__user { margin-top: 8px; font-size: 14px; color: var(--muted); }
+    .hero__user a { color: var(--accent); font-weight: 600; }
+
+    .toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; padding: 20px 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); margin-bottom: 36px; }
+    .toolbar__left { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .toolbar__right { display: flex; align-items: center; gap: 12px; }
+
+    .email-field { display: flex; align-items: center; gap: 8px; background: var(--card); border: 1px solid var(--rule); border-radius: 0px; padding: 6px 6px 6px 16px; }
+    .email-field input { border: none; outline: none; font-family: var(--font); font-size: 14px; background: transparent; color: var(--ink); min-width: 220px; }
+    .email-field input::placeholder { color: #555; }
+
+    .filter-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+    .filter-pill { display: inline-flex; align-items: center; padding: 7px 16px; border-radius: 0px; font-size: 13px; font-weight: 600; letter-spacing: .02em; border: 2px solid var(--rule); background: transparent; color: var(--ink); cursor: pointer; transition: all var(--transition); white-space: nowrap; font-family: var(--font); }
+    .filter-pill:hover { background: var(--pill); }
+    .filter-pill.active { border-color: var(--accent); color: var(--accent); background: transparent; }
+
+    .btn-save { display: inline-flex; align-items: center; gap: 8px; padding: 10px 28px; border-radius: 0px; font-family: var(--font-heading); font-size: 14px; font-weight: 500; letter-spacing: .04em; text-transform: uppercase; border: 2px solid var(--ink); background: transparent; color: var(--ink); cursor: pointer; transition: all var(--transition); }
+    .btn-save:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-save:disabled { opacity: .5; cursor: not-allowed; }
+    .btn-save .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.3); border-top-color: var(--ink); border-radius: 50%; animation: spin .6s linear infinite; display: none; }
+    .btn-save.loading .spinner { display: block; }
+    .btn-save.loading .btn-text { display: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .section-header { font-family: var(--font-heading); font-size: 12px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; padding-bottom: 12px; border-bottom: 1px solid var(--rule); }
+    .section-title { font-family: var(--font-heading); font-size: 22px; font-weight: 500; margin-bottom: 24px; }
+
+    .newsletter-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 48px; }
+    @media (max-width: 900px) { .newsletter-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 580px) { .newsletter-grid { grid-template-columns: 1fr; } }
+
+    .nl-card { background: var(--card); border: 1px solid var(--rule); border-radius: var(--radius-card); padding: 24px; display: flex; flex-direction: column; min-height: 180px; cursor: pointer; transition: all var(--transition); position: relative; box-shadow: var(--shadow-card); }
+    .nl-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+    .nl-card.subscribed { border-color: var(--accent); background: #0a1f1a; }
+    .nl-card.subscribed .nl-card__toggle { background: var(--accent); border-color: var(--accent); }
+    .nl-card.subscribed .nl-card__toggle svg { stroke: var(--bg); }
+
+    .nl-card__top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+    .nl-card__freq { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+    .nl-card__toggle { width: 36px; height: 36px; border-radius: 0px; border: 2px solid var(--rule); background: transparent; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all var(--transition); flex-shrink: 0; }
+    .nl-card__toggle:hover { border-color: var(--accent); }
+    .nl-card__toggle svg { width: 16px; height: 16px; stroke: var(--ink); stroke-width: 2.5; transition: all var(--transition); }
+
+    .nl-card__name { font-family: var(--font-heading); font-size: 18px; font-weight: 500; letter-spacing: -.01em; text-transform: uppercase; margin-bottom: 6px; }
+    .nl-card__desc { font-size: 14px; color: var(--muted); line-height: 1.5; flex: 1; }
+    .nl-card__link { margin-top: 16px; font-size: 13px; font-weight: 600; color: var(--accent); text-decoration: none; text-underline-offset: 3px; }
+    .nl-card__link:hover { text-decoration: underline; color: var(--muted); }
+
+    .nl-card__badge { position: absolute; top: 12px; left: 12px; background: var(--accent); color: var(--bg); font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 3px 10px; border-radius: 0px; display: none; }
+    .nl-card.subscribed .nl-card__badge { display: inline-block; }
+
+    .toast { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(100px); padding: 14px 28px; border-radius: 0px; font-size: 14px; font-weight: 600; z-index: 1000; opacity: 0; transition: all .3s cubic-bezier(.4,0,.2,1); box-shadow: 0 8px 24px rgba(0,0,0,.4); }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    .toast.success { background: var(--success-bg); color: var(--success); border: 1px solid var(--success); }
+    .toast.error { background: var(--error-bg); color: var(--error); border: 1px solid var(--error); }
+
+    .pref-counter { font-size: 14px; color: var(--muted); font-weight: 500; }
+    .pref-counter strong { color: var(--ink); font-weight: 700; }
+
+    .site-footer { text-align: center; padding: 32px 24px; font-size: 13px; color: var(--muted); border-top: 1px solid var(--rule); max-width: 1100px; margin: 0 auto; }
+    .site-footer a { color: var(--accent); font-weight: 600; }
+
+    @media (max-width: 768px) { .site-header__nav { display: none; } .email-field input { min-width: 160px; } .toolbar { flex-direction: column; align-items: stretch; } .toolbar__left, .toolbar__right { justify-content: center; } }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a href="https://levitation.fm" class="site-header__logo">
+        <img src="https://levitation.fm/cdn/shop/files/LEVITATION-text-logo_b04c56c0-afd7-4a47-91ae-c8380849cb0c_220x.png?v=1646401878" alt="LEVITATION">
+      </a>
+      <nav>
+        <ul class="site-header__nav">
+          <li><a href="https://levitation.fm/lineup">Lineup</a></li>
+          <li><a href="https://levitation.fm/tickets">Tickets</a></li>
+          <li><a href="https://levitation.fm/merch">Merch</a></li>
+          <li><a href="https://levitation.fm/schedule">Schedule</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <div class="main">
+    <div class="hero">
+      <h1>Newsletter Preferences</h1>
+      <p>Choose what you want from LEVITATION. Toggle any newsletter on or off, then hit <strong>Save preferences</strong>.</p>
+      <div class="hero__user">
+        Subscribed as <strong id="user-email">—</strong>.
+        <a href="/account/" id="link-account">Back to account</a>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="toolbar__left">
+        <div class="email-field">
+          <input type="email" id="email-input" placeholder="your@email.com" />
+        </div>
+        <div class="filter-pills">
+          <button class="filter-pill active" data-filter="all">All</button>
+          <button class="filter-pill" data-filter="featured">Featured</button>
+          <button class="filter-pill" data-filter="genre">Genres</button>
+        </div>
+      </div>
+      <div class="toolbar__right">
+        <span class="pref-counter"><strong id="sub-count">0</strong> selected</span>
+        <button class="btn-save" id="save-btn" onclick="savePreferences()">
+          <span class="btn-text">Save Preferences</span>
+          <span class="spinner"></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="section-header">Featured</div>
+    <h2 class="section-title">Festival essentials</h2>
+    <div class="newsletter-grid">
+
+      <div class="nl-card" data-pref="pref_lineup" data-category="featured" onclick="toggleCard(this)">
+        <div class="nl-card__top"><span class="nl-card__freq">Seasonal</span><button class="nl-card__toggle" aria-label="Toggle"><svg viewBox="0 0 24 24" fill="none"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button></div>
+        <span class="nl-card__badge">Subscribed</span>
+        <h3 class="nl-card__name">Lineup Announcements</h3>
+        <p class="nl-card__desc">Be the first to know when new artists are added to the LEVITATION lineup.</p>
+        <a href="https://levitation.fm/lineup" class="nl-card__link" onclick="event.stopPropagation()">See the lineup &rarr;</a>
+      </div>
+
+      <div class="nl-card" data-pref="pref_tickets" data-category="featured" onclick="toggleCard(this)">
+        <div class="nl-card__top"><span class="nl-card__freq">As announced</span><button class="nl-card__toggle" aria-label="Toggle"><svg viewBox="0 0 24 24" fill="none"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button></div>
+        <span class="nl-card__badge">Subscribed</span>
+        <h3 class="nl-card__name">Ticket Sales &amp; Presales</h3>
+        <p class="nl-card__desc">On-sale dates, presale codes, tier alerts, and availability updates.</p>
+        <a href="https://levitation.fm/tickets" class="nl-card__link" onclick="event.stopPropagation()">Get tickets &rarr;</a>
+      </div>
+
+      <div class="nl-card" data-pref="pref_merch" data-category="featured" onclick="toggleCard(this)">
+        <div class="nl-card__top"><span class="nl-card__freq">Monthly</span><button class="nl-card__toggle" aria-label="Toggle"><svg viewBox="0 0 24 24" fill="none"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button></div>
+        <span class="nl-card__badge">Subscribed</span>
+        <h3 class="nl-card__name">Merch Drops</h3>
+        <p class="nl-card__desc">Limited edition festival merch, artist collabs, and exclusive prints.</p>
+        <a href="https://levitation.fm/merch" class="nl-card__link" onclick="event.stopPropagation()">Shop merch &rarr;</a>
+      </div>
+
+      <div class="nl-card" data-pref="pref_schedule" data-category="featured" onclick="toggleCard(this)">
+        <div class="nl-card__top"><span class="nl-card__freq">Pre-festival</span><button class="nl-card__toggle" aria-label="Toggle"><svg viewBox="0 0 24 24" fill="none"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button></div>
+        <span class="nl-card__badge">Subscribed</span>
+        <h3 class="nl-card__name">Schedule &amp; Set Times</h3>
+        <p class="nl-card__desc">Set times, stage assignments, daily schedules, and last-minute changes.</p>
+        <a href="https://levitation.fm/schedule" class="nl-card__link" onclick="event.stopPropagation()">See schedule &rarr;</a>
+      </div>
+
+    </div>
+
+    <div class="section-header">Genres</div>
+    <h2 class="section-title">Psychedelic subgenres</h2>
+    <div class="newsletter-grid">
+
+      <div class="nl-card" data-pref="pref_psych_rock" data-category="genre" onclick="toggleCard(this)">
+        <div class="nl-card__top"><span class="nl-card__freq">Weekly</span><button class="nl-card__toggle" aria-label="Toggle"><svg viewBox="0 0 24 24" fill="none"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button></div>
+        <span class="nl-card__badge">Subscribed</span>
+        <h3 class="nl-card__name">Psych Rock</h3>
+        <p class="nl-card__desc">The core of the sound. Fuzz, reverb, and infinite jams.</p>
+      </div>
+
+      <div class="nl-card" data-pref="pref_garage" data-category="genre" onclick="toggleCard(this)">
+        <div class="nl-card__top"><span class="nl-card__freq">Weekly</span><button class="nl-card__toggle" aria-label="Toggle"><svg viewBox="0 0 24 24" fill="none"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button></div>
+        <span class="nl-card__badge">Subscribed</span>
+        <h3 class="nl-card__name">Garage &amp; Fuzz</h3>
+        <p class="nl-card__desc">Raw, loud, and distorted. Lo-fi garage and fuzz-drenched bangers.</p>
+      </div>
+
+      <div class="nl-card" data-pref="pref_shoegaze" data-category="genre" onclick="toggleCard(this)">
+        <div class="nl-card__top"><span class="nl-card__freq">Weekly</span><button class="nl-card__toggle" aria-label="Toggle"><svg viewBox="0 0 24 24" fill="none"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button></div>
+        <span class="nl-card__badge">Subscribed</span>
+        <h3 class="nl-card__name">Shoegaze &amp; Dream Pop</h3>
+        <p class="nl-card__desc">Walls of sound, ethereal vocals, and blissed-out textures.</p>
+      </div>
+
+      <div class="nl-card" data-pref="pref_krautrock" data-category="genre" onclick="toggleCard(this)">
+        <div class="nl-card__top"><span class="nl-card__freq">Weekly</span><button class="nl-card__toggle" aria-label="Toggle"><svg viewBox="0 0 24 24" fill="none"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button></div>
+        <span class="nl-card__badge">Subscribed</span>
+        <h3 class="nl-card__name">Krautrock &amp; Experimental</h3>
+        <p class="nl-card__desc">Motorik rhythms, electronic experimentation, and cosmic exploration.</p>
+      </div>
+
+      <div class="nl-card" data-pref="pref_doom" data-category="genre" onclick="toggleCard(this)">
+        <div class="nl-card__top"><span class="nl-card__freq">Weekly</span><button class="nl-card__toggle" aria-label="Toggle"><svg viewBox="0 0 24 24" fill="none"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button></div>
+        <span class="nl-card__badge">Subscribed</span>
+        <h3 class="nl-card__name">Doom &amp; Stoner</h3>
+        <p class="nl-card__desc">Low and slow. Riff worship, sludge, and heavy psychedelia.</p>
+      </div>
+
+      <div class="nl-card" data-pref="pref_psych_folk" data-category="genre" onclick="toggleCard(this)">
+        <div class="nl-card__top"><span class="nl-card__freq">Weekly</span><button class="nl-card__toggle" aria-label="Toggle"><svg viewBox="0 0 24 24" fill="none"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button></div>
+        <span class="nl-card__badge">Subscribed</span>
+        <h3 class="nl-card__name">Psych Folk &amp; Cosmic</h3>
+        <p class="nl-card__desc">Acoustic explorations, cosmic Americana, and psychedelic folk.</p>
+      </div>
+
+    </div>
+
+    <footer class="site-footer">
+      To unsubscribe from all emails, use the unsubscribe link at the bottom of any LEVITATION email.<br>
+      <a href="/manage/" id="footer-manage">Manage all subscriptions</a> &middot;
+      <a href="/privacy/" id="footer-privacy">Privacy</a> &middot;
+      <a href="/account/" id="footer-account">Back to account</a>
+    </footer>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script async src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=XP2nn6"></script>
+  <script>
+    var preferences = {};
+    var dirty = false;
+
+    // ---- Identity ----
+    function getEmail() {
+      var params = new URLSearchParams(window.location.search);
+      var g = params.get('g');
+      if (g) {
+        try {
+          var raw = atob(g);
+          try { var obj = JSON.parse(raw); if (obj && (obj.email || obj['$email'])) return obj.email || obj['$email']; } catch(e2) {}
+          if (raw.indexOf('@') !== -1) return raw.trim();
+        } catch(e) {}
+      }
+      return params.get('e') || params.get('email') || '';
+    }
+
+    function eLink(base) {
+      var email = getEmail();
+      return email ? base + '?e=' + encodeURIComponent(email) : base;
+    }
+
+    // ---- Init ----
+    document.addEventListener('DOMContentLoaded', function() {
+      var email = getEmail();
+      var params = new URLSearchParams(window.location.search);
+
+      // Populate email field and display
+      var emailInput = document.getElementById('email-input');
+      var userEmailEl = document.getElementById('user-email');
+      if (email) {
+        emailInput.value = email;
+        userEmailEl.textContent = email;
+      }
+
+      // Wire up footer links
+      ['footer-manage','footer-privacy','footer-account','link-account'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.href = eLink(el.getAttribute('href'));
+      });
+
+      // Identify in Klaviyo
+      if (email) {
+        var _learnq = window._learnq || [];
+        _learnq.push(['identify', { '$email': email }]);
+      }
+
+      // Pre-load preferences from URL params
+      // Klaviyo email template can pass: ?pref_lineup=1&pref_merch=1 etc.
+      var allPrefs = ['pref_lineup','pref_tickets','pref_merch','pref_schedule',
+                      'pref_psych_rock','pref_garage','pref_shoegaze','pref_krautrock','pref_doom','pref_psych_folk'];
+      allPrefs.forEach(function(key) {
+        preferences[key] = params.get(key) === '1';
+      });
+
+      // Apply state to cards
+      document.querySelectorAll('.nl-card[data-pref]').forEach(function(card) {
+        var key = card.dataset.pref;
+        if (preferences[key]) card.classList.add('subscribed');
+      });
+
+      // Filter pills
+      document.querySelectorAll('.filter-pill').forEach(function(pill) {
+        pill.addEventListener('click', function() {
+          document.querySelectorAll('.filter-pill').forEach(function(p) { p.classList.remove('active'); });
+          pill.classList.add('active');
+          filterCards(pill.dataset.filter);
+        });
+      });
+
+      updateCounter();
+    });
+
+    function toggleCard(card) {
+      var key = card.dataset.pref;
+      card.classList.toggle('subscribed');
+      preferences[key] = card.classList.contains('subscribed');
+      dirty = true;
+      updateCounter();
+    }
+
+    function updateCounter() {
+      document.getElementById('sub-count').textContent = document.querySelectorAll('.nl-card.subscribed').length;
+    }
+
+    function filterCards(filter) {
+      document.querySelectorAll('.nl-card').forEach(function(card) {
+        card.style.display = (filter === 'all' || card.dataset.category === filter) ? '' : 'none';
+      });
+    }
+
+    function savePreferences() {
+      var email = document.getElementById('email-input').value.trim();
+      if (!email || email.indexOf('@') === -1) {
+        showToast('Please enter a valid email address.', 'error'); return;
+      }
+
+      var btn = document.getElementById('save-btn');
+      btn.classList.add('loading'); btn.disabled = true;
+
+      var properties = {};
+      for (var key in preferences) { properties[key] = preferences[key]; }
+      properties['preferences_updated_at'] = new Date().toISOString();
+
+      fetch('https://a.klaviyo.com/client/profiles/?company_id=XP2nn6', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'revision': '2024-10-15' },
+        body: JSON.stringify({ data: { type: 'profile', attributes: { email: email, properties: properties } } })
+      })
+      .then(function(r) {
+        if (r.ok || r.status === 201 || r.status === 202) {
+          var _learnq = window._learnq || [];
+          var identifyData = { '$email': email };
+          for (var k in properties) { identifyData[k] = properties[k]; }
+          _learnq.push(['identify', identifyData]);
+
+          var subbed = [], unsubbed = [];
+          for (var p in preferences) { if (preferences[p]) subbed.push(p); else unsubbed.push(p); }
+          _learnq.push(['track', 'Updated Newsletter Preferences', {
+            email_address: email, method: 'PREFERENCE_CENTER', method_detail: 'preferences_page',
+            subscribed_newsletters: subbed.join(', '), unsubscribed_newsletters: unsubbed.join(', '),
+            subscribed_count: subbed.length, total_available: 10
+          }]);
+
+          showToast('Preferences saved!', 'success');
+          dirty = false;
+        } else { throw new Error('API error ' + r.status); }
+      })
+      .catch(function(err) {
+        // Fallback to _learnq only
+        var _learnq = window._learnq || [];
+        var identifyData = { '$email': email };
+        for (var k in properties) { identifyData[k] = properties[k]; }
+        _learnq.push(['identify', identifyData]);
+        showToast('Preferences saved!', 'success');
+        dirty = false;
+      })
+      .finally(function() { btn.classList.remove('loading'); btn.disabled = false; });
+    }
+
+    function showToast(message, type) {
+      var toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.className = 'toast ' + type + ' show';
+      setTimeout(function() { toast.classList.remove('show'); }, 4000);
+    }
+
+    window.addEventListener('beforeunload', function(e) {
+      if (dirty) { e.preventDefault(); e.returnValue = ''; }
+    });
+  </script>
+
+</body>
+</html>

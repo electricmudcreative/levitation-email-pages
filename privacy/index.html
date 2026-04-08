@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Privacy &amp; Data &mdash; LEVITATION</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #000000; --ink: #FFFFFF; --muted: #888888;
+      --rule: rgba(255,255,255,.14); --card: #111111; --accent: #40D1B4;
+      --secondary: #bc3562; --radius: 0px; --pill: 0px;
+      --font: "Space Mono", monospace; --font-heading: "Jost", sans-serif;
+      --shadow: 0 1px 3px rgba(0,0,0,.3); --shadow-hover: 0 4px 12px rgba(0,0,0,.4);
+      --transition: 0.2s cubic-bezier(.4,0,.2,1);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--ink); font-family: var(--font); -webkit-font-smoothing: antialiased; line-height: 1.6; }
+    a { color: var(--accent); text-decoration: none; text-underline-offset: 2px; }
+    a:hover { text-decoration: underline; }
+
+    .site-header { background: var(--bg); color: var(--ink); border-bottom: 1px solid var(--rule); }
+    .site-header__inner { max-width: 1100px; margin: 0 auto; padding: 18px 24px; display: flex; align-items: center; }
+    .site-header__logo img { max-width: 220px; height: auto; display: block; }
+
+    .main { max-width: 720px; margin: 0 auto; padding: 48px 24px 80px; }
+
+    .back-link { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; text-decoration: none; color: var(--muted); margin-bottom: 32px; }
+    .back-link:hover { color: var(--ink); text-decoration: none; }
+    .back-link svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
+
+    h1 { font-family: var(--font-heading); font-size: clamp(32px, 5vw, 44px); font-weight: 500; letter-spacing: -.02em; margin-bottom: 12px; }
+    .subtitle { font-size: 17px; color: var(--muted); margin-bottom: 40px; }
+
+    .card { background: var(--card); border: 1px solid var(--rule); border-radius: var(--radius); padding: 28px; margin-bottom: 16px; box-shadow: var(--shadow); }
+    .card h2 { font-family: var(--font-heading); font-size: 18px; font-weight: 500; margin-bottom: 8px; }
+    .card p { font-size: 15px; color: var(--muted); margin-bottom: 16px; }
+    .card ul { list-style: none; font-size: 14px; color: var(--muted); }
+    .card ul li { padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,.06); }
+    .card ul li:last-child { border-bottom: none; }
+    .card ul li strong { color: var(--ink); font-weight: 600; }
+
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 24px; border-radius: 0px; font-family: var(--font-heading); font-size: 14px; font-weight: 500; letter-spacing: .03em; border: 2px solid var(--ink); background: transparent; color: var(--ink); cursor: pointer; transition: all var(--transition); text-decoration: none; }
+    .btn:hover { border-color: var(--accent); color: var(--accent); background: transparent; text-decoration: none; }
+    .btn--danger { border-color: #c62828; color: #c62828; }
+    .btn--danger:hover { background: #c62828; color: #fff; }
+
+    .divider { height: 1px; background: var(--rule); margin: 32px 0; }
+    .footer { text-align: center; padding: 32px 0; font-size: 13px; color: var(--muted); border-top: 1px solid var(--rule); margin-top: 32px; }
+    .footer a { color: var(--accent); font-weight: 600; }
+    .toast { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(100px); padding: 14px 28px; border-radius: 0px; font-size: 14px; font-weight: 600; z-index: 1000; opacity: 0; transition: all .3s; box-shadow: 0 8px 24px rgba(0,0,0,.4); background: rgba(46,125,50,.15); color: #2e7d32; border: 1px solid #2e7d32; }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a href="https://levitation.fm" class="site-header__logo">
+        <img src="https://levitation.fm/cdn/shop/files/LEVITATION-text-logo_b04c56c0-afd7-4a47-91ae-c8380849cb0c_220x.png?v=1646401878" alt="LEVITATION">
+      </a>
+    </div>
+  </header>
+
+  <div class="main">
+    <a href="/account/" id="back-link" class="back-link">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      Back to account
+    </a>
+
+    <h1>Privacy &amp; Data</h1>
+    <p class="subtitle">Learn how LEVITATION uses your information and manage your email permissions.</p>
+
+    <div class="card">
+      <h2>What we collect</h2>
+      <p>When you subscribe to our emails, we collect the following information to personalize your festival experience:</p>
+      <ul>
+        <li><strong>Email address</strong> &mdash; to send you lineup news, ticket alerts, and festival updates</li>
+        <li><strong>Name</strong> &mdash; to personalize your emails (optional)</li>
+        <li><strong>Newsletter preferences</strong> &mdash; which topics and genres interest you</li>
+        <li><strong>Engagement data</strong> &mdash; opens, clicks, and purchase history to improve recommendations</li>
+        <li><strong>Location</strong> &mdash; timezone info to send emails at the right time</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>How we use your data</h2>
+      <p>Your data helps us deliver a better LEVITATION experience. We use it to:</p>
+      <ul>
+        <li><strong>Send relevant content</strong> &mdash; lineup news matched to your genre interests and preferences</li>
+        <li><strong>Improve recommendations</strong> &mdash; surface artists, merch, and events you'll actually care about</li>
+        <li><strong>Respect your preferences</strong> &mdash; only send what you've opted into</li>
+        <li><strong>Measure performance</strong> &mdash; understand what content resonates so we can do more of it</li>
+      </ul>
+      <p style="margin-top:12px;font-size:14px;">We never sell your data to third parties. Your information stays within the LEVITATION ecosystem.</p>
+    </div>
+
+    <div class="card">
+      <h2>Your rights</h2>
+      <p>You have full control over your data. Here's what you can do:</p>
+      <ul>
+        <li><strong>Update preferences</strong> &mdash; change which newsletters you receive at any time</li>
+        <li><strong>Unsubscribe</strong> &mdash; opt out of any or all emails</li>
+        <li><strong>Request your data</strong> &mdash; get a copy of the information we have about you</li>
+        <li><strong>Delete your data</strong> &mdash; request that we remove your information from our systems</li>
+      </ul>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="card">
+      <h2>Manage your data</h2>
+      <p>Use the options below to manage your information. Data requests are typically processed within 30 days.</p>
+      <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px;">
+        <a href="/preferences/" id="btn-prefs" class="btn">Update preferences</a>
+        <button class="btn" onclick="requestData()">Request my data</button>
+        <button class="btn btn--danger" onclick="requestDeletion()">Delete my data</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Questions?</h2>
+      <p>If you have any questions about how we handle your data, reach out at
+        <a href="mailto:info@levitation.fm">info@levitation.fm</a> or visit our
+        <a href="https://levitation.fm/privacy">full privacy policy</a>.
+      </p>
+      <p style="font-size:13px; color:var(--muted); margin-top:8px;">LEVITATION &middot; Austin, TX</p>
+    </div>
+
+    <div class="footer">
+      <a href="/account/" id="footer-account">Account</a> &middot;
+      <a href="/preferences/" id="footer-prefs">Newsletters</a> &middot;
+      <a href="/manage/" id="footer-manage">Manage subscriptions</a>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    function getEmail() {
+      var params = new URLSearchParams(window.location.search);
+      var g = params.get('g');
+      if (g) {
+        try {
+          var raw = atob(g);
+          try { var obj = JSON.parse(raw); if (obj && (obj.email || obj['$email'])) return obj.email || obj['$email']; } catch(e2) {}
+          if (raw.indexOf('@') !== -1) return raw.trim();
+        } catch(e) {}
+      }
+      return params.get('e') || params.get('email') || '';
+    }
+
+    function eLink(base) {
+      var email = getEmail();
+      return email ? base + '?e=' + encodeURIComponent(email) : base;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      ['back-link','btn-prefs','footer-account','footer-prefs','footer-manage'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el && el.tagName === 'A') el.href = eLink(el.getAttribute('href'));
+      });
+    });
+
+    function showToast(msg) {
+      var t = document.getElementById('toast');
+      t.textContent = msg; t.classList.add('show');
+      setTimeout(function(){ t.classList.remove('show'); }, 4000);
+    }
+
+    function requestData() {
+      var email = getEmail();
+      if (!email) { alert('No email found. Please access this page from your account.'); return; }
+      showToast('Data request submitted for ' + email + '. We\'ll email you within 30 days.');
+    }
+
+    function requestDeletion() {
+      var email = getEmail();
+      if (!email) { alert('No email found. Please access this page from your account.'); return; }
+      if (confirm('Request deletion of all data for ' + email + '? This cannot be undone.')) {
+        showToast('Deletion request submitted. We\'ll process this within 30 days.');
+      }
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LEVITATION Account</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #000000; --ink: #FFFFFF; --muted: #888888;
+      --rule: rgba(255,255,255,.14); --card: #111111; --accent: #40D1B4;
+      --secondary: #bc3562; --radius: 0px; --pill: 0px;
+      --font: "Space Mono", monospace; --font-heading: "Jost", sans-serif;
+      --shadow: 0 1px 3px rgba(0,0,0,.3), 0 1px 2px rgba(0,0,0,.2);
+      --shadow-hover: 0 4px 12px rgba(0,0,0,.4);
+      --transition: 0.2s cubic-bezier(.4,0,.2,1);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--ink); font-family: var(--font); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+    a { color: var(--accent); text-decoration: none; text-underline-offset: 2px; }
+    a:hover { text-decoration: underline; }
+
+    .site-header { background: var(--bg); color: var(--ink); border-bottom: 1px solid var(--rule); }
+    .site-header__inner { max-width: 1100px; margin: 0 auto; padding: 18px 24px; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+    .site-header__logo img { max-width: 220px; height: auto; display: block; }
+
+    .layout { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; display: grid; grid-template-columns: 220px 1fr; gap: 48px; }
+    @media (max-width: 768px) { .layout { grid-template-columns: 1fr; gap: 32px; } }
+
+    .sidebar__section { font-family: var(--font-heading); font-size: 12px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+    .sidebar__nav { list-style: none; margin-bottom: 32px; }
+    .sidebar__nav li { margin-bottom: 4px; }
+    .sidebar__nav a { display: block; padding: 8px 12px; border-radius: 0px; text-decoration: none; font-weight: 600; font-size: 15px; transition: background var(--transition); color: var(--ink); }
+    .sidebar__nav a:hover { background: rgba(255,255,255,.06); text-decoration: none; }
+    .sidebar__nav a.active { background: var(--card); box-shadow: var(--shadow); }
+
+    .hero { margin-bottom: 40px; }
+    .hero h1 { font-family: var(--font-heading); font-size: clamp(36px, 5vw, 52px); font-weight: 500; letter-spacing: -.02em; line-height: 1.05; margin-bottom: 10px; }
+    .hero p { font-size: 17px; color: var(--muted); max-width: 520px; }
+
+    .section { margin-bottom: 40px; }
+    .section__label { font-family: var(--font-heading); font-size: 12px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--rule); }
+
+    .row-card { background: var(--card); border: 1px solid var(--rule); border-radius: var(--radius); padding: 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 12px; box-shadow: var(--shadow); transition: all var(--transition); }
+    .row-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-1px); }
+    .row-card__icon { width: 44px; height: 44px; border-radius: 0px; background: rgba(255,255,255,.06); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .row-card__icon svg { width: 22px; height: 22px; stroke: var(--ink); fill: none; stroke-width: 1.5; }
+    .row-card__body { flex: 1; }
+    .row-card__title { font-family: var(--font-heading); font-size: 16px; font-weight: 500; margin-bottom: 2px; }
+    .row-card__desc { font-size: 14px; color: var(--muted); }
+    .row-card__btn { display: inline-flex; align-items: center; padding: 9px 24px; border-radius: 0px; font-family: var(--font-heading); font-size: 13px; font-weight: 500; letter-spacing: .04em; text-transform: uppercase; text-decoration: none; border: 2px solid var(--ink); background: transparent; color: var(--ink); cursor: pointer; transition: all var(--transition); white-space: nowrap; }
+    .row-card__btn:hover { border-color: var(--accent); color: var(--accent); background: transparent; text-decoration: none; }
+
+    .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 40px; }
+    @media (max-width: 580px) { .stats-row { grid-template-columns: 1fr; } .row-card { flex-wrap: wrap; } .row-card__icon { display: none; } .row-card__btn { width: 100%; justify-content: center; margin-top: 8px; } }
+    .stat-card { background: var(--card); border: 1px solid var(--rule); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); }
+    .stat-card__number { font-family: var(--font-heading); font-size: 28px; font-weight: 500; line-height: 1; color: var(--accent); }
+    .stat-card__label { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+    .footer { padding: 24px 0; font-size: 13px; color: var(--muted); border-top: 1px solid var(--rule); margin-top: 24px; }
+    .footer a { color: var(--accent); font-weight: 600; }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a href="https://levitation.fm" class="site-header__logo">
+        <img src="https://levitation.fm/cdn/shop/files/LEVITATION-text-logo_b04c56c0-afd7-4a47-91ae-c8380849cb0c_220x.png?v=1646401878" alt="LEVITATION">
+      </a>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside>
+      <p class="sidebar__section">Account</p>
+      <ul class="sidebar__nav" id="sidebar-nav">
+        <li><a href="/account/" class="active">Email &amp; settings</a></li>
+        <li><a href="/preferences/" id="nav-prefs">Newsletters</a></li>
+        <li><a href="/manage/" id="nav-manage">Manage subscriptions</a></li>
+        <li><a href="/privacy/" id="nav-privacy">Privacy</a></li>
+        <li><a href="https://levitation.fm/contact">Help</a></li>
+      </ul>
+    </aside>
+
+    <main>
+      <div class="hero">
+        <h1 id="greeting">Good evening.</h1>
+        <p>Welcome back to LEVITATION<span id="user-name-display"></span>. Manage your email settings and subscriptions below.</p>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-card__number" id="stat-newsletters">&mdash;</div>
+          <div class="stat-card__label">Newsletters subscribed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__number" id="stat-genres">&mdash;</div>
+          <div class="stat-card__label">Genre interests</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__number">&#x2713;</div>
+          <div class="stat-card__label">Email verified</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section__label">Your Content</div>
+        <div class="row-card">
+          <div class="row-card__icon">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div class="row-card__body">
+            <div class="row-card__title">Newsletters</div>
+            <div class="row-card__desc">Choose what you want from LEVITATION: lineup news, tickets, merch, and genre picks.</div>
+          </div>
+          <a href="/preferences/" id="btn-prefs" class="row-card__btn">View All</a>
+        </div>
+        <div class="row-card">
+          <div class="row-card__icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+          </div>
+          <div class="row-card__body">
+            <div class="row-card__title">Email preferences</div>
+            <div class="row-card__desc">Update frequency, channels, and email settings.</div>
+          </div>
+          <a href="/manage/" id="btn-manage" class="row-card__btn">Update</a>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section__label">Manage</div>
+        <div class="row-card">
+          <div class="row-card__icon">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div class="row-card__body">
+            <div class="row-card__title">Your privacy choices</div>
+            <div class="row-card__desc">Learn how we use your info and manage email permissions.</div>
+          </div>
+          <a href="/privacy/" id="btn-privacy" class="row-card__btn">View</a>
+        </div>
+        <div class="row-card">
+          <div class="row-card__icon">
+            <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          </div>
+          <div class="row-card__body">
+            <div class="row-card__title">Contact &amp; support</div>
+            <div class="row-card__desc">Questions? We'd love to hear from you.</div>
+          </div>
+          <a href="https://levitation.fm/contact" class="row-card__btn">Contact</a>
+        </div>
+      </div>
+
+      <div class="footer">
+        Need help? Email us at <a href="mailto:info@levitation.fm">info@levitation.fm</a>.
+      </div>
+    </main>
+  </div>
+
+  <script async src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=XP2nn6"></script>
+  <script>
+    // Time-based greeting
+    var h = new Date().getHours();
+    document.getElementById('greeting').textContent = h < 12 ? 'Good morning.' : h < 17 ? 'Good afternoon.' : 'Good evening.';
+
+    // Resolve subscriber identity from URL params
+    function getEmail() {
+      var params = new URLSearchParams(window.location.search);
+      var g = params.get('g');
+      if (g) {
+        try {
+          var raw = atob(g);
+          try { var obj = JSON.parse(raw); if (obj && (obj.email || obj['$email'])) return obj.email || obj['$email']; } catch(e) {}
+          if (raw.indexOf('@') !== -1) return raw.trim();
+        } catch(e) {}
+      }
+      return params.get('e') || params.get('email') || '';
+    }
+
+    function eLink(base) {
+      var email = getEmail();
+      return email ? base + '?e=' + encodeURIComponent(email) : base;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      var email = getEmail();
+
+      // Wire up all nav links with email param
+      ['nav-prefs','nav-manage','nav-privacy','btn-prefs','btn-manage','btn-privacy'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.href = eLink(el.getAttribute('href'));
+      });
+
+      // Identify in Klaviyo
+      if (email) {
+        var _learnq = window._learnq || [];
+        _learnq.push(['identify', { '$email': email }]);
+
+        // Show first name in greeting if available
+        var params = new URLSearchParams(window.location.search);
+        var fname = params.get('fname') || params.get('first_name');
+        if (fname) document.getElementById('user-name-display').textContent = ', ' + fname;
+      }
+
+      // Load pref counts from URL params (set by Klaviyo email template)
+      var params = new URLSearchParams(window.location.search);
+      var featuredPrefs = ['pref_lineup','pref_tickets','pref_merch','pref_schedule'];
+      var genrePrefs = ['pref_psych_rock','pref_garage','pref_shoegaze','pref_krautrock','pref_doom','pref_psych_folk'];
+
+      var fCount = featuredPrefs.filter(function(k) { return params.get(k) === '1'; }).length;
+      var gCount = genrePrefs.filter(function(k) { return params.get(k) === '1'; }).length;
+
+      if (fCount + gCount > 0) {
+        document.getElementById('stat-newsletters').textContent = fCount;
+        document.getElementById('stat-genres').textContent = gCount;
+      }
+    });
+  </script>
+</body>
+</html>

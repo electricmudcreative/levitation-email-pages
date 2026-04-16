@@ -172,14 +172,20 @@
     function requestData() {
       var email = getEmail();
       if (!email) { alert('No email found. Please access this page from your account.'); return; }
-      showToast('Data request submitted for ' + email + '. We\'ll email you within 30 days.');
+      var subject = encodeURIComponent('Data Request - ' + email);
+      var body = encodeURIComponent('Hi LEVITATION,\n\nI would like to request a copy of all data associated with my email address: ' + email + '\n\nThank you.');
+      window.location.href = 'mailto:info@levitation.fm?subject=' + subject + '&body=' + body;
+      showToast('Opening email client. Send the pre-filled email to complete your request.');
     }
 
     function requestDeletion() {
       var email = getEmail();
       if (!email) { alert('No email found. Please access this page from your account.'); return; }
-      if (confirm('Request deletion of all data for ' + email + '? This cannot be undone.')) {
-        showToast('Deletion request submitted. We\'ll process this within 30 days.');
+      if (confirm('This will open an email to request deletion of all data for ' + email + '. Continue?')) {
+        var subject = encodeURIComponent('Data Deletion Request - ' + email);
+        var body = encodeURIComponent('Hi LEVITATION,\n\nI would like to request deletion of all data associated with my email address: ' + email + '\n\nI understand this action cannot be undone.\n\nThank you.');
+        window.location.href = 'mailto:info@levitation.fm?subject=' + subject + '&body=' + body;
+        showToast('Opening email client. Send the pre-filled email to complete your request.');
       }
     }
   </script>

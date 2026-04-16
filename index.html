@@ -82,7 +82,7 @@
             <button type="submit" class="btn" id="submit-btn">Join LEVITATION</button>
         </form>
         <div class="links">
-            <p>Already subscribed? <a href="/preferences/">Manage preferences</a></p>
+            <p>Already subscribed? <a href="/preferences/" id="link-prefs">Manage preferences</a></p>
         </div>
     </div>
 
@@ -90,10 +90,17 @@
     <script>
         var _learnq = window._learnq || [];
 
+        function eLink(base) {
+            var email = getEmail();
+            return email ? base + '?e=' + encodeURIComponent(email) : base;
+        }
+
         // Pre-fill email if arriving from a Klaviyo link
         document.addEventListener('DOMContentLoaded', function() {
             var email = getEmail();
             if (email) document.getElementById('email').value = email;
+            var prefsLink = document.getElementById('link-prefs');
+            if (prefsLink) prefsLink.href = eLink(prefsLink.getAttribute('href'));
         });
 
         function getEmail() {

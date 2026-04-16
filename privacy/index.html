@@ -111,10 +111,9 @@
 
     <div class="card">
       <h2>Manage your data</h2>
-      <p>Use the options below to manage your information. Data requests are typically processed within 30 days.</p>
+      <p>Use the options below to manage your information. Deletion requests are typically processed within 30 days.</p>
       <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px;">
         <a href="/preferences/" id="btn-prefs" class="btn">Update preferences</a>
-        <button class="btn" onclick="requestData()">Request my data</button>
         <button class="btn btn--danger" onclick="requestDeletion()">Delete my data</button>
       </div>
     </div>
@@ -167,15 +166,6 @@
       var t = document.getElementById('toast');
       t.textContent = msg; t.classList.add('show');
       setTimeout(function(){ t.classList.remove('show'); }, 4000);
-    }
-
-    function requestData() {
-      var email = getEmail();
-      if (!email) { alert('No email found. Please access this page from your account.'); return; }
-      var subject = encodeURIComponent('Data Request - ' + email);
-      var body = encodeURIComponent('Hi LEVITATION,\n\nI would like to request a copy of all data associated with my email address: ' + email + '\n\nThank you.');
-      window.location.href = 'mailto:info@levitation.fm?subject=' + subject + '&body=' + body;
-      showToast('Opening email client. Send the pre-filled email to complete your request.');
     }
 
     function requestDeletion() {

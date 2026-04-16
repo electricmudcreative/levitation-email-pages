@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #000; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; -webkit-font-smoothing: antialiased; }
+    .header { background: #000; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .header__inner { max-width: 1200px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; }
+    .header__logo img { height: 28px; width: auto; display: block; }
+    .header__nav { display: flex; gap: 28px; align-items: center; }
+    .header__nav a { color: #fff; text-decoration: none; font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; transition: opacity 0.2s; }
+    .header__nav a:hover { opacity: 0.7; }
+    .header__nav a.active { color: #58C6B0; }
+    @media (max-width: 600px) {
+      .header__nav { gap: 16px; }
+      .header__nav a { font-size: 11px; }
+      .header__logo img { height: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header__inner">
+      <a href="https://levitation.fm" class="header__logo" target="_top">
+        <img src="https://levitation.fm/cdn/shop/files/LEVITATION-text-logo_b04c56c0-afd7-4a47-91ae-c8380849cb0c_220x.png?v=1646401878" alt="LEVITATION">
+      </a>
+      <nav class="header__nav">
+        <a href="https://levitation.fm/pages/austin-psych-fest-2026" target="_top">Events</a>
+        <a href="https://levitation.fm/collections" target="_top">Shop</a>
+        <a href="https://levitation.fm/pages/explore" target="_top">Explore</a>
+        <a href="https://help.levitation.fm" target="_top" class="active">Help</a>
+      </nav>
+    </div>
+  </header>
+  <script>
+    // Auto-resize: tell parent iframe our height
+    window.addEventListener('load', function() {
+      var height = document.documentElement.scrollHeight;
+      window.parent.postMessage({ type: 'lev-component-height', component: 'header', height: height }, '*');
+    });
+  </script>
+</body>
+</html>

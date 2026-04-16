@@ -234,6 +234,27 @@
         <p class="nl-card__desc">Acoustic explorations, cosmic Americana, and psychedelic folk.</p>
       </div>
 
+      <div class="nl-card" data-pref="pref_punk" data-category="genre" onclick="toggleCard(this)">
+        <div class="nl-card__top"><span class="nl-card__freq">Weekly</span><button class="nl-card__toggle" aria-label="Toggle"><svg viewBox="0 0 24 24" fill="none"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button></div>
+        <span class="nl-card__badge">Subscribed</span>
+        <h3 class="nl-card__name">Punk &amp; Post-Punk</h3>
+        <p class="nl-card__desc">Fast, loud, and wired. From basement shows to art-punk provocations.</p>
+      </div>
+
+      <div class="nl-card" data-pref="pref_indie" data-category="genre" onclick="toggleCard(this)">
+        <div class="nl-card__top"><span class="nl-card__freq">Weekly</span><button class="nl-card__toggle" aria-label="Toggle"><svg viewBox="0 0 24 24" fill="none"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button></div>
+        <span class="nl-card__badge">Subscribed</span>
+        <h3 class="nl-card__name">Indie</h3>
+        <p class="nl-card__desc">The wide middle. Guitar-forward independents, bedroom pop, and everything between.</p>
+      </div>
+
+      <div class="nl-card" data-pref="pref_darkwave" data-category="genre" onclick="toggleCard(this)">
+        <div class="nl-card__top"><span class="nl-card__freq">Weekly</span><button class="nl-card__toggle" aria-label="Toggle"><svg viewBox="0 0 24 24" fill="none"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button></div>
+        <span class="nl-card__badge">Subscribed</span>
+        <h3 class="nl-card__name">Darkwave &amp; Goth</h3>
+        <p class="nl-card__desc">Synth-drenched shadows, cold wave, and post-punk noir.</p>
+      </div>
+
     </div>
 
     <footer class="site-footer">
@@ -298,7 +319,8 @@
       // Pre-load preferences from URL params
       // Klaviyo email template can pass: ?pref_lineup=1&pref_merch=1 etc.
       var allPrefs = ['pref_lineup','pref_tickets','pref_merch','pref_schedule',
-                      'pref_psych_rock','pref_garage','pref_shoegaze','pref_krautrock','pref_doom','pref_psych_folk'];
+                      'pref_psych_rock','pref_garage','pref_shoegaze','pref_krautrock','pref_doom','pref_psych_folk',
+                      'pref_punk','pref_indie','pref_darkwave'];
       allPrefs.forEach(function(key) {
         preferences[key] = params.get(key) === '1';
       });
@@ -369,7 +391,7 @@
           _learnq.push(['track', 'Updated Newsletter Preferences', {
             email_address: email, method: 'PREFERENCE_CENTER', method_detail: 'preferences_page',
             subscribed_newsletters: subbed.join(', '), unsubscribed_newsletters: unsubbed.join(', '),
-            subscribed_count: subbed.length, total_available: 10
+            subscribed_count: subbed.length, total_available: 13
           }]);
 
           showToast('Preferences saved!', 'success');

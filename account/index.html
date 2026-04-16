@@ -207,7 +207,7 @@
       // Load pref counts from URL params (set by Klaviyo email template)
       var params = new URLSearchParams(window.location.search);
       var featuredPrefs = ['pref_lineup','pref_tickets','pref_merch','pref_schedule'];
-      var genrePrefs = ['pref_psych_rock','pref_garage','pref_shoegaze','pref_krautrock','pref_doom','pref_psych_folk'];
+      var genrePrefs = ['pref_psych_rock','pref_garage','pref_shoegaze','pref_krautrock','pref_doom','pref_psych_folk','pref_punk','pref_indie','pref_darkwave'];
 
       var fCount = featuredPrefs.filter(function(k) { return params.get(k) === '1'; }).length;
       var gCount = genrePrefs.filter(function(k) { return params.get(k) === '1'; }).length;
